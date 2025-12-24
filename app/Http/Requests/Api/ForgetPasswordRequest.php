@@ -13,7 +13,7 @@ class ForgetPasswordRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,15 @@ class ForgetPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'email' => 'required|email:strict|exists:users,email',
+        ];
+    }
+
+     public function messages()
+    {
+        return [
+            "email.required" => 'Please provide an email address!',
+            "email.exists" => 'This email address cannot be found!',
         ];
     }
 

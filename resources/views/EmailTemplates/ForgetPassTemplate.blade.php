@@ -17,25 +17,14 @@
                         <tr>
                             <td style="color:#000000; padding-right: 40px;padding-bottom: 45px; padding-left: 40px;font-family:Verdana, Geneva, Tahoma, sans-serif;font-size:14px;font-weight:400;line-height:21px;">
                                 Hello {{ $user->name }},<br><br>
-                                @if($page == "register") 
-                                
-                                    @if(!empty($is_resend_otp))
-                                        You requested a new OTP to continue with your account verification.<br><br>
-                                        Your OTP: {{ $otp }}. <br><br>
-                                    @else 
-                                        Welcome to {{ env('APP_NAME') }},<br>
-                                        To complete your registration, please enter the following One-Time Password (OTP): <br><br>
-                                        {{ $otp }}<br><br>
-                                    @endif
+                                You recently requested to reset your password for your {{ env('APP_NAME') }} account. Click the button below to reset it.<br><br>
+                                <a href="{{ $link }}" style="display:inline-block;padding:12px 25px;background-color:#1d72b8;color:#ffffff !important;text-decoration:none;border-radius:5px;font-weight:bold;font-family:Arial,sans-serif;text-align:center;">Click To Reset Password</a><br><br>
 
-                                    This code will expire in {{ $minutes }} minutes.<br>
-                                    Do not share this code with anyone.<br><br>
-                                    We’re excited to have you onboard!<br><br>
+                                This link is valid for {{ $minutes }} minutes.<br>
+                                If you did not request a password reset, you can safely ignore this email.<br><br>
 
-                                    Thanks,<br>
-                                    {{ env('APP_NAME') }} Team<br>
-
-                                @endif
+                                Thanks,<br>
+                                {{ env('APP_NAME') }} Team<br>
                             </td>
                         </tr>
                         <tr>

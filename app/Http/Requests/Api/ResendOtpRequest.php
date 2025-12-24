@@ -24,16 +24,16 @@ class ResendOtpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
-            'page' => 'required|in:register,forget-password',
+            'email' => 'required|email:strict|exists:users,email',
+            'page' => 'required|in:register',
         ];
     }
 
     public function messages()
     {
         return [
-            "user_id.required" => 'Please provide an user id!',
-            "user_id.exists" => 'Please provide an valid existing user id!',
+            "email.required" => 'Please provide an user id!',
+            "email.exists" => 'Please provide an valid existing user email!',
             'page.in'          => 'Invalid request type.',
         ];
     }

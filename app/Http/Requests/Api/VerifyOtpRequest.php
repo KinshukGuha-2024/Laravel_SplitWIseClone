@@ -24,7 +24,7 @@ class VerifyOtpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
+            'email' => 'required|email:strict|exists:users,email',
             'otp' => 'required|digits:4',
         ];
     }
@@ -32,8 +32,8 @@ class VerifyOtpRequest extends FormRequest
     public function messages()
     {
         return [
-            "user_id.required" => 'Please provide an user id!',
-            "user_id.exists" => 'Please provide an valid existing user id!',
+            "email.required" => 'Please provide an user id!',
+            "email.exists" => 'Please provide an valid existing user email!',
             "otp.required" => 'please provide a 4 digit otp to validate otp!',
             "otp" => 'Otp should have 4 digits!'
         ];

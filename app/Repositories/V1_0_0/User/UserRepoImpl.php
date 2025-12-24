@@ -19,7 +19,7 @@ class UserRepoImpl implements UserRepo {
 
     public function validateOtp($request)
     {
-        $user = User::find($request->user_id);
+        $user = User::where('email',$request->email)->first();
         $otpExpired = Carbon::parse($user->otp_send_at)
                            ->addMinutes(5)
                            ->isPast();

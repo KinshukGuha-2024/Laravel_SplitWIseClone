@@ -2,12 +2,18 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Models\User;
+use App\Rules\Api\Auth\LoginRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class LoginRequest extends FormRequest
 {
+    protected function prepareForValidation()
+    {
+        return $this->merge(['invalid' => 'validation']);
+    }
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -34,8 +40,24 @@ class LoginRequest extends FormRequest
         return [
             "email.required" => 'Please provide an email address!',
             "email.email" => 'please provide an valid email address!',
-            "password" => 'Please provide your account password!'
+            "password.required" => 'Please provide your account password!',
+            "password.min" => "Please provide a minimum 8 characters long password!",
+            "password.regex" => "Password must include at least one lowercase letter, one uppercase letter, one number!",
         ];
+    }
+
+    public function withValidator($validator) {
+        if(!$validator->fails()) {
+            $valid = validator()->make($this->all(), ['invalid' => ['required', new LoginRule([$this, 'setUser'], $this->email, $this->password)]]);
+            if ($valid->fails()) {
+                $validator->errors()->merge($valid->errors());
+            }
+        }
+    }
+
+    public function setUser(User $user)
+    {
+        $this->user = $user;
     }
 
     public function failedValidation(Validator $validator)

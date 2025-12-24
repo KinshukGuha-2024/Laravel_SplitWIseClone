@@ -9,20 +9,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OtpEmailTemplate extends Mailable implements ShouldQueue
+class ForgetPassEmailTemplate extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public $data, $subject;
+    public $data;
     public function __construct($data)
     {
         $this->data = $data;
-        if($data->page == "register") {
-            $this->subject = env('APP_NAME').' – Verify OTP to Complete Sign-Up';
-        }
     }
 
     /**
@@ -32,7 +29,7 @@ class OtpEmailTemplate extends Mailable implements ShouldQueue
     {
         
         return new Envelope(
-            subject: $this->subject
+            subject: "Password Reset Request"
         );
     }
 
@@ -42,13 +39,11 @@ class OtpEmailTemplate extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'EmailTemplates.OtpTemplate',
+            view: 'EmailTemplates.ForgetPassTemplate',
             with: [
                 "user" => $this->data->user,
-                "otp" => $this->data->otp,
-                "page" => $this->data->page,
+                "link" => $this->data->link,
                 "minutes" => $this->data->minutes,
-                "is_resend_otp" => !empty($this->data->is_resend) ? 1 : 0
             ]
         );
     }
